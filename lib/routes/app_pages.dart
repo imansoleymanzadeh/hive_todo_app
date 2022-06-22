@@ -6,7 +6,7 @@ import 'package:hive_todo_app/views/home_screen.dart';
 
 class AppPages{
   static List<GetPage>pages=[
-    GetPage(name: AppRoutes.homeScreenRoute, page:()=> HomeScreen())
+    GetPage(name: AppRoutes.homeScreenRoute, page:()=> const HomeScreen())
 
   ];
 }
