@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hive_todo_app/routes/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -61,31 +63,36 @@ class HomeScreen extends StatelessWidget {
         mainAxisSpacing: 5,
         crossAxisSpacing: 5
       ), itemBuilder: (context,index){
-        return Card(
-
-          elevation: 12,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FlutterLogo(size: 50),
-               Padding(
-                 padding:  EdgeInsets.all(20.0),
-                 child:   Text('Work', style: TextStyle(
-                    fontSize: 30,
-                    // fontWeight: FontWeight.bold
-                  ),),
-               ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text('61Task', style: TextStyle(
-                    // fontSize: 30,
-                    fontWeight: FontWeight.w400
-                  )),
-                )
-              ],
+        return InkWell(
+          onTap: (){
+            Get.toNamed(AppRoutes.detailScreenRoute);
+          },
+          child: Card(
+        
+            elevation: 12,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FlutterLogo(size: 50),
+                 Padding(
+                   padding:  EdgeInsets.all(10.0),
+                   child:   Text('Work', style: TextStyle(
+                      fontSize: 30,
+                      // fontWeight: FontWeight.bold
+                    ),),
+                 ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text('61Task', style: TextStyle(
+                      // fontSize: 30,
+                      fontWeight: FontWeight.w400
+                    )),
+                  )
+                ],
+              ),
             ),
           ),
         );
