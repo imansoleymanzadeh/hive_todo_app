@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_todo_app/HomeScreen/views/home_screen.dart';
+
+import 'package:hive_todo_app/views/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
