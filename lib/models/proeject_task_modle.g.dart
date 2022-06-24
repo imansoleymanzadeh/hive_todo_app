@@ -16,12 +16,13 @@ class ProjectTaskAdapter extends TypeAdapter<ProjectTask> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ProjectTask()
-      ..taskName = fields[0] as String?
-      ..taskDescription = fields[1] as String?
-      ..taskStartDateTime = fields[2] as DateTime?
-      ..taskEndDateTime = fields[3] as DateTime?
-      ..taskMode = fields[4] as StatusModel?;
+    return ProjectTask(
+      taskDescription: fields[1] as String?,
+      taskStatus: fields[4] as StatusModel?,
+      taskName: fields[0] as String?,
+      taskEndDateTime: fields[3] as DateTime?,
+      taskStartDateTime: fields[2] as DateTime?,
+    );
   }
 
   @override
@@ -37,7 +38,7 @@ class ProjectTaskAdapter extends TypeAdapter<ProjectTask> {
       ..writeByte(3)
       ..write(obj.taskEndDateTime)
       ..writeByte(4)
-      ..write(obj.taskMode);
+      ..write(obj.taskStatus);
   }
 
   @override

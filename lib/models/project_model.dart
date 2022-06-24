@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 part 'project_model.g.dart';
 
 @HiveType(typeId: 0)
-class Project {
+class Project extends HiveObject {
   @HiveField(0)
   String? name;
   @HiveField(1)
@@ -18,4 +18,30 @@ class Project {
   StatusModel? projectStatus;
   @HiveField(5)
   DateTime? projectEndDateTime;
+
+  Project({
+    this.name,
+    this.description,
+    this.projectCreateDateTime,
+    this.projectEndDateTime,
+    this.projectStatus,
+    this.taskList,
+  });
+
+  factory Project.fromJson(Map<String, dynamic> json) => Project(
+      name: json['name'],
+      description: json['description'],
+      projectCreateDateTime: json['projectCreateDateTime'],
+      projectEndDateTime: json['projectEndDateTime'],
+      projectStatus: json['projectStatus'],
+      taskList: json['taskLists']);
+
+  Map<String, dynamic> toJson() => {
+    'name':name,
+    'description':description, 
+    'projectCreateDateTime': projectCreateDateTime,
+    'projectEndDateTime':projectEndDateTime, 
+    'projectStatus':projectStatus,
+    'taskList': taskList
+  };
 }

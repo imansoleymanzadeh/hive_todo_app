@@ -13,5 +13,26 @@ class ProjectTask {
   @HiveField(3)
   DateTime? taskEndDateTime;
   @HiveField(4)
-  StatusModel? taskMode;
+  StatusModel? taskStatus;
+  ProjectTask({
+    this.taskDescription,
+    this.taskStatus,
+    this.taskName,
+    this.taskEndDateTime,
+    this.taskStartDateTime,
+  });
+  factory ProjectTask.fromJson(Map<String, dynamic> json) => ProjectTask(
+      taskName: json['taskName'],
+      taskDescription: json['taskDescription'],
+      taskEndDateTime: json['taskEndDateTime'],
+      taskStartDateTime: json['taskStartDateTime'], 
+      taskStatus: json['taskStatus']
+      );
+  Map<String, dynamic> toJson() => {
+        'taskName': taskName,
+        'taskStatus':taskStatus,
+        'taskDescription': taskDescription,
+        'taskEndDateTime': taskEndDateTime,
+        'taskStartDateTime': taskStartDateTime,
+      };
 }
