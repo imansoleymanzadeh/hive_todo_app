@@ -5,7 +5,6 @@ import 'package:hive_todo_app/routes/app_pages.dart';
 
 void main() async {
   await Hive.initFlutter();
- 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
