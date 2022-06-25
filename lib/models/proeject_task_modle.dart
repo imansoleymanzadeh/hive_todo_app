@@ -13,7 +13,7 @@ class ProjectTask {
   @HiveField(3)
   DateTime? taskEndDateTime;
   @HiveField(4)
-  StatusModel? taskStatus;
+  Status? taskStatus;
   ProjectTask({
     this.taskDescription,
     this.taskStatus,

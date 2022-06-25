@@ -28,14 +28,14 @@ class HiveServices {
         : Hive.registerAdapter(ProjectTaskAdapter());
     Hive.isAdapterRegistered(2)
         ? log('projectStatus was Initalized')
-        : Hive.registerAdapter(StatusModelAdapter());
+        : Hive.registerAdapter(StatusAdapter());
   }
 
   Future initProjectBox() async {
     log('*********INITING THE HIVE BOX*********', name: 'HIVE HELPER');
     bool isExistBox = await Hive.boxExists(_boxName);
-    bool isOpenedBox =  Hive.isBoxOpen(_boxName);
-    if (isExistBox || isOpenedBox) {
+    bool isOpenedBox = Hive.isBoxOpen(_boxName);
+    if (isOpenedBox) {
       _projectBox = Hive.box(_boxName);
       return _projectBox;
     } else {
@@ -44,12 +44,16 @@ class HiveServices {
     }
   }
 
-  Future <Map<String,dynamic>> createProject({required Project project}) async {
+  Future<Map<String, dynamic>> createProject({required Project project}) async {
     Project? createdProject;
     try {
-      _projectBox!.add(project).then((value) {
-        createdProject = _projectBox!.getAt(value)!;
+      log('*********CREATING PROJECT IN DB*********');
+      await _projectBox!.add(project).then((value) async {
+        log('key is : $value');
+        createdProject = await _projectBox!.getAt(value);
+        log('project name : ${createdProject!.name!}');
       });
+
       return {'resualt': CrudStatus.succes, 'data': createdProject};
     } on HiveError catch (e) {
       return {'resualt': CrudStatus.fail, 'data': e.message};

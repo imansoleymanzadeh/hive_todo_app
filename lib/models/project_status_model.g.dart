@@ -6,35 +6,42 @@ part of 'project_status_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class StatusModelAdapter extends TypeAdapter<StatusModel> {
+class StatusAdapter extends TypeAdapter<Status> {
   @override
   final int typeId = 2;
 
   @override
-  StatusModel read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return StatusModel()
-      ..done = fields[0] as String?
-      ..inProgracess = fields[1] as String?
-      ..end = fields[2] as String?
-      ..expired = fields[3] as String?;
+  Status read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return Status.done;
+      case 1:
+        return Status.inProgracess;
+      case 2:
+        return Status.end;
+      case 3:
+        return Status.expired;
+      default:
+        return Status.done;
+    }
   }
 
   @override
-  void write(BinaryWriter writer, StatusModel obj) {
-    writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.done)
-      ..writeByte(1)
-      ..write(obj.inProgracess)
-      ..writeByte(2)
-      ..write(obj.end)
-      ..writeByte(3)
-      ..write(obj.expired);
+  void write(BinaryWriter writer, Status obj) {
+    switch (obj) {
+      case Status.done:
+        writer.writeByte(0);
+        break;
+      case Status.inProgracess:
+        writer.writeByte(1);
+        break;
+      case Status.end:
+        writer.writeByte(2);
+        break;
+      case Status.expired:
+        writer.writeByte(3);
+        break;
+    }
   }
 
   @override
@@ -43,7 +50,7 @@ class StatusModelAdapter extends TypeAdapter<StatusModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StatusModelAdapter &&
+      other is StatusAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

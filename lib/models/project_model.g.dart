@@ -21,7 +21,7 @@ class ProjectAdapter extends TypeAdapter<Project> {
       description: fields[1] as String?,
       projectCreateDateTime: fields[2] as DateTime?,
       projectEndDateTime: fields[5] as DateTime?,
-      projectStatus: fields[4] as StatusModel?,
+      projectStatus: fields[4] as dynamic,
       taskList: (fields[3] as List?)?.cast<ProjectTask>(),
     );
   }

@@ -15,7 +15,7 @@ class Project extends HiveObject {
   @HiveField(3)
   List<ProjectTask>? taskList;
   @HiveField(4)
-  StatusModel? projectStatus;
+  Status? projectStatus;
   @HiveField(5)
   DateTime? projectEndDateTime;
 

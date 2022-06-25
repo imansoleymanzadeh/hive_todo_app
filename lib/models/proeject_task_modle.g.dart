@@ -18,7 +18,7 @@ class ProjectTaskAdapter extends TypeAdapter<ProjectTask> {
     };
     return ProjectTask(
       taskDescription: fields[1] as String?,
-      taskStatus: fields[4] as StatusModel?,
+      taskStatus: fields[4] as dynamic,
       taskName: fields[0] as String?,
       taskEndDateTime: fields[3] as DateTime?,
       taskStartDateTime: fields[2] as DateTime?,

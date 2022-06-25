@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_todo_app/controller/home_screen_controller.dart';
+import 'package:hive_todo_app/models/proeject_task_modle.dart';
+import 'package:hive_todo_app/models/project_model.dart';
+import 'package:hive_todo_app/models/project_status_model.dart';
 import 'package:hive_todo_app/routes/app_routes.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -10,6 +15,39 @@ class HomeScreen extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          controller.createProject(
+            project: Project(
+                name: 'abolfazl',
+                description: 'this is test project',
+                projectCreateDateTime: DateTime.now(),
+                projectEndDateTime: DateTime.now(),
+                projectStatus: Status.done,
+                taskList: [
+                  ProjectTask(
+                      taskName: 'buy bread',
+                      taskDescription: 'description for testing',
+                      taskEndDateTime: DateTime.now(),
+                      taskStartDateTime: DateTime.now(),
+                      taskStatus: Status.inProgracess),
+                  ProjectTask(
+                      taskName: 'buy bread',
+                      taskDescription: 'description for testing',
+                      taskEndDateTime: DateTime.now(),
+                      taskStartDateTime: DateTime.now(),
+                      taskStatus: Status.inProgracess),
+                  ProjectTask(
+                      taskName: 'buy bread',
+                      taskDescription: 'description for testing',
+                      taskEndDateTime: DateTime.now(),
+                      taskStartDateTime: DateTime.now(),
+                      taskStatus: Status.inProgracess)
+                ]),
+          );
+        },
+        child: Icon(CupertinoIcons.add),
+      ),
       body: Column(
         children: [
           _appBar(width: width, height: height),
@@ -21,7 +59,7 @@ class HomeScreen extends StatelessWidget {
 
   _appBar({double? width, double? height}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       width: width,
       height: height! * 0.2,
       // color: Colors.red,
@@ -36,9 +74,9 @@ class HomeScreen extends StatelessWidget {
               size: 40,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
               'Lists',
               style: TextStyle(
                   fontSize: 35,
@@ -53,7 +91,7 @@ class HomeScreen extends StatelessWidget {
 
   _body({double? width, double? height}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       width: width,
       height: height! * 0.8,
       // color: Colors.green,
@@ -85,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(10.0),
                         child: Text('61Task',
                             style: TextStyle(
                                 // fontSize: 30,
