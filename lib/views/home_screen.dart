@@ -18,35 +18,22 @@ class HomeScreen extends GetView<HomeController> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.createProject(
-            project: Project(
-                name: 'abolfazl',
-                description: 'this is test project',
-                projectCreateDateTime: DateTime.now(),
-                projectEndDateTime: DateTime.now(),
-                projectStatus: Status.done,
-                taskList: [
-                  ProjectTask(
-                      taskName: 'buy bread',
-                      taskDescription: 'description for testing',
-                      taskEndDateTime: DateTime.now(),
-                      taskStartDateTime: DateTime.now(),
-                      taskStatus: Status.inProgracess),
-                  ProjectTask(
-                      taskName: 'buy bread',
-                      taskDescription: 'description for testing',
-                      taskEndDateTime: DateTime.now(),
-                      taskStartDateTime: DateTime.now(),
-                      taskStatus: Status.inProgracess),
-                  ProjectTask(
-                      taskName: 'buy bread',
-                      taskDescription: 'description for testing',
-                      taskEndDateTime: DateTime.now(),
-                      taskStartDateTime: DateTime.now(),
-                      taskStatus: Status.inProgracess)
-                ]),
-          );
+              project: Project(
+                  name: 'amin',
+                  description: 'sthing to write',
+                  projectCreateDateTime: DateTime.now(),
+                  projectEndDateTime: DateTime.now(),
+                  projectStatus: Status.inProgracess,
+                  taskList: [
+                ProjectTask(
+                    taskDescription: 'sthing to do ',
+                    taskEndDateTime: DateTime.now(),
+                    taskStartDateTime: DateTime.now(),
+                    taskName: 'create project',
+                    taskStatus: Status.end)
+              ]));
         },
-        child: Icon(CupertinoIcons.add),
+        child: const Icon(CupertinoIcons.add),
       ),
       body: Column(
         children: [
@@ -95,46 +82,88 @@ class HomeScreen extends GetView<HomeController> {
       width: width,
       height: height! * 0.8,
       // color: Colors.green,
-      child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, mainAxisSpacing: 5, crossAxisSpacing: 5),
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Get.toNamed(AppRoutes.detailScreenRoute);
-              },
-              child: Card(
-                elevation: 12,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      FlutterLogo(size: 50),
-                      Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          'Work',
-                          style: TextStyle(
-                            fontSize: 30,
-                            // fontWeight: FontWeight.bold
+      child: GetBuilder<HomeController>(builder: (controller) {
+        if (controller.errorMessage != null) {
+          return Center(child: Text(controller.errorMessage!));
+        }
+        if (controller.allProjects.isEmpty) {
+          return const Center(
+            child: Text('you have no Project create one ")'),
+          );
+        } else {
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemCount: controller.allProjects.length,
+            itemBuilder: (BuildContext context, int index) {
+              Project project = controller.allProjects[index];
+              String projectStatus = controller.allProjects[index].projectStatus
+                  .toString()
+                  .split('.')
+                  .last;
+              return InkWell(
+                onTap: () {
+                  Get.toNamed(AppRoutes.detailScreenRoute);
+                },
+                child: Card(
+                  elevation: 12,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const FlutterLogo(size: 50),
+                            Chip(
+                              label: Text(projectStatus),
+                              // backgroundColor:projectStatus=='done'?Colors.green?projectStatus=='end'?Colors.red?projectStatus='inProgracess'?Colors.orange:Colors.grey ,
+                              backgroundColor:
+                                  _chipBackGroudColorBuilder(projectStatus),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            project.name!,
+                            style: const TextStyle(
+                              fontSize: 30,
+                              // fontWeight: FontWeight.bold
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text('61Task',
-                            style: TextStyle(
-                                // fontSize: 30,
-                                fontWeight: FontWeight.w400)),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text('${project.taskList!.length}Tasks',
+                              style: const TextStyle(
+                                  // fontSize: 30,
+                                  fontWeight: FontWeight.w400)),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            },
+          );
+        }
+      }),
     );
+  }
+
+  _chipBackGroudColorBuilder(String status) {
+    switch (status) {
+      case 'done':
+        return Colors.green;
+      case 'end':
+        return Colors.orange;
+      case 'expired':
+        return Colors.red;
+      case 'inProgracess':
+        return Colors.blue;
+    }
   }
 }

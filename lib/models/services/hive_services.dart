@@ -10,39 +10,37 @@ import 'package:hive_todo_app/models/project_status_model.dart';
 enum CrudStatus { succes, fail }
 
 class HiveServices {
-  HiveServices._() {
-    initAdaptors();
-    initProjectBox();
-  }
+  HiveServices();
   static const String _boxName = 'ProjectsBox';
-
-  static final HiveServices instance = HiveServices._();
 
   Box<Project>? _projectBox;
 
-  initAdaptors() {
+  Future _initAdaptors<bool>() async {
     log('*********REGESTRING ADAPTORS*********', name: 'HIVE HELPER');
-    Hive.isAdapterRegistered(0)
-        ? log('projectAdaptor was Initalized', name: 'HIVE HELPER')
-        : Hive.registerAdapter(ProjectAdapter());
-    Hive.isAdapterRegistered(1)
-        ? log('projectTask was Initalized', name: 'HIVE HELPER')
-        : Hive.registerAdapter(ProjectTaskAdapter());
-    Hive.isAdapterRegistered(2)
-        ? log('projectStatus was Initalized', name: 'HIVE HELPER')
-        : Hive.registerAdapter(StatusAdapter());
+    try {
+      Hive.registerAdapter(ProjectAdapter());
+      Hive.registerAdapter(ProjectTaskAdapter());
+      Hive.registerAdapter(StatusAdapter());
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future initProjectBox() async {
+  Future<bool> _initProjectBox() async {
     log('*********INITING THE HIVE BOX*********', name: 'HIVE HELPER');
     bool isExistBox = await Hive.boxExists(_boxName);
     bool isOpenedBox = Hive.isBoxOpen(_boxName);
-    if (isOpenedBox) {
-      _projectBox = Hive.box(_boxName);
-      return _projectBox;
-    } else {
-      _projectBox = await Hive.openBox(_boxName);
-      return _projectBox;
+    try {
+      if (isOpenedBox) {
+        _projectBox = Hive.box(_boxName);
+        return true;
+      } else {
+        _projectBox = await Hive.openBox(_boxName);
+        return true;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -58,6 +56,18 @@ class HiveServices {
       return {'resualt': CrudStatus.fail, 'data': e.message};
     } catch (e) {
       return {'resualt': CrudStatus.fail, 'data': e.toString()};
+    }
+  }
+
+  Future initHiveDB() async {
+    try {
+      var adapter = await _initAdaptors();
+      var projectBox = await _initProjectBox();
+      if (adapter && projectBox) {
+        return true;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -97,11 +107,11 @@ class HiveServices {
       log('********ERROR : ${e.message}*****', name: 'HIVE HELPER');
       return {'resualt': CrudStatus.fail, 'data': e.message};
     } catch (e) {
-      // throw e;
-      return {
-        'resualt': CrudStatus.fail,
-        'data': e.toString(),
-      };
+      throw e;
+      // return {
+      //   'resualt': CrudStatus.fail,
+      //   'data': e.toString(),
+      // };
     }
   }
 
