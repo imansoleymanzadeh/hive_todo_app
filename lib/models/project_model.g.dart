@@ -21,15 +21,16 @@ class ProjectAdapter extends TypeAdapter<Project> {
       description: fields[1] as String?,
       projectCreateDateTime: fields[2] as DateTime?,
       projectEndDateTime: fields[5] as DateTime?,
-      projectStatus: fields[4] as dynamic,
+      projectStatus: fields[4] as Status?,
       taskList: (fields[3] as List?)?.cast<ProjectTask>(),
+      iconPath: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Project obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class ProjectAdapter extends TypeAdapter<Project> {
       ..writeByte(4)
       ..write(obj.projectStatus)
       ..writeByte(5)
-      ..write(obj.projectEndDateTime);
+      ..write(obj.projectEndDateTime)
+      ..writeByte(6)
+      ..write(obj.iconPath);
   }
 
   @override

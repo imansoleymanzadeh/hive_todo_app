@@ -19,6 +19,9 @@ class Project extends HiveObject {
   @HiveField(5)
   DateTime? projectEndDateTime;
 
+  @HiveField(6)
+  String ? iconPath;
+
   Project({
     this.name,
     this.description,
@@ -26,6 +29,7 @@ class Project extends HiveObject {
     this.projectEndDateTime,
     this.projectStatus,
     this.taskList,
+    this.iconPath
   });
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
@@ -37,11 +41,11 @@ class Project extends HiveObject {
       taskList: json['taskLists']);
 
   Map<String, dynamic> toJson() => {
-    'name':name,
-    'description':description, 
-    'projectCreateDateTime': projectCreateDateTime,
-    'projectEndDateTime':projectEndDateTime, 
-    'projectStatus':projectStatus,
-    'taskList': taskList
-  };
+        'name': name,
+        'description': description,
+        'projectCreateDateTime': projectCreateDateTime,
+        'projectEndDateTime': projectEndDateTime,
+        'projectStatus': projectStatus,
+        'taskList': taskList
+      };
 }
