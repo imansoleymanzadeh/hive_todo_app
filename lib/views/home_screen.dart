@@ -17,21 +17,7 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          controller.createProject(
-              project: Project(
-                  name: 'amin',
-                  description: 'sthing to write',
-                  projectCreateDateTime: DateTime.now(),
-                  projectEndDateTime: DateTime.now(),
-                  projectStatus: Status.inProgracess,
-                  taskList: [
-                ProjectTask(
-                    taskDescription: 'sthing to do ',
-                    taskEndDateTime: DateTime.now(),
-                    taskStartDateTime: DateTime.now(),
-                    taskName: 'create project',
-                    taskStatus: Status.end)
-              ]));
+          Get.toNamed(AppRoutes.creatEditScreenRoute);
         },
         child: const Icon(CupertinoIcons.add),
       ),
