@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:hive_todo_app/models/project_model.dart';
 import 'package:hive_todo_app/models/services/hive_services.dart';
 
-class HomeController extends GetxController {
+class AppController extends GetxController {
   final HiveServices _dataBaseService = HiveServices();
   List<Project> allProjects = [];
   String? errorMessage;
@@ -21,6 +21,20 @@ class HomeController extends GetxController {
         update();
       }
     });
+  }
+
+  Future<DateTime> pickDateTimeForTodo() async {
+    var dateTimePicked = await showDatePicker(
+      context: Get.context!,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2025),
+    );
+    if (dateTimePicked != null) {
+      return dateTimePicked;
+    } else {
+      return DateTime.now();
+    }
   }
 
   loadAllProjectsFromDb() async {

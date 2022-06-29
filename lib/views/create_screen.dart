@@ -1,42 +1,26 @@
 // ignore_for_file: unused_local_variable, no_leading_underscores_for_local_identifiers
 
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-// import 'package:get/get.dart';
+import 'package:hive_todo_app/controller/app_controller.dart';
+import 'package:hive_todo_app/models/proeject_task_modle.dart';
 
-class CreateEditProjectScreen extends StatefulWidget {
+import 'package:intl/intl.dart';
+
+class CreateEditProjectScreen extends GetView<AppController> {
   const CreateEditProjectScreen({Key? key}) : super(key: key);
 
   @override
-  State<CreateEditProjectScreen> createState() => _CreateEditProjectScreenState();
-}
-
-class _CreateEditProjectScreenState extends State<CreateEditProjectScreen> {
-  TextEditingController todoDatacontroller=TextEditingController();
-  @override
   Widget build(BuildContext context) {
-    
-    DateTime _dateTime=DateTime.now();
+    TextEditingController projectstartDateTimeController =
+        TextEditingController();
+    TextEditingController projectTitileController = TextEditingController();
+    TextEditingController projectEndDateTimeController =
+        TextEditingController();
 
-    _selectedTodoData(BuildContext context)async{
-      var _picker=await showDatePicker(
-        context: context,
-        initialDate: _dateTime,
-        firstDate: DateTime(2000),
-        lastDate: DateTime(21000)
-    );
-    if(_picker!=null){
-      setState(() {
-        _dateTime=_picker;
-        todoDatacontroller.text=DateFormat('yyy-MM-dd').format(_picker); 
-      });
-    }
-    
-    }
+    List<ProjectTask> projectTasks = [];
+    // TextEditingController todoNameController = TextEditingController();
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -44,7 +28,7 @@ class _CreateEditProjectScreenState extends State<CreateEditProjectScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title:const Text(
+        title: const Text(
           "New Task",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
@@ -54,7 +38,7 @@ class _CreateEditProjectScreenState extends State<CreateEditProjectScreen> {
               onPressed: () {
                 Get.back();
               },
-              icon:const Icon(
+              icon: const Icon(
                 CupertinoIcons.multiply,
                 color: Colors.black,
                 size: 32,
@@ -62,7 +46,7 @@ class _CreateEditProjectScreenState extends State<CreateEditProjectScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        physics:const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
             24,
@@ -73,88 +57,133 @@ class _CreateEditProjectScreenState extends State<CreateEditProjectScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const  Text(
+              const Text(
                 "what are you planning?",
-                style: TextStyle(color: Color.fromARGB(255, 82, 70, 70), fontSize: 18),
+                style: TextStyle(
+                    color: Color.fromARGB(255, 82, 70, 70), fontSize: 18),
                 textAlign: TextAlign.start,
               ),
-            const  SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              TextFormField(
-                minLines:
-                    7, // any number you need (It works as the rows for the textarea)
-                keyboardType: TextInputType.multiline,
-                maxLines: 12,
-                
+              const SizedBox(
+                height: 12,
+              ),
+              TextField(
                 decoration: InputDecoration(
-                    hintText: "masseage",
+                    hintText: "Project name",
+                    prefixIcon: const Icon(CupertinoIcons.bag),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
                     )),
-      
               ),
-             const  SizedBox(height: 32,),
+              const SizedBox(
+                height: 32,
+              ),
               TextField(
                 decoration: InputDecoration(
-                  hintText: "title",
-                  prefixIcon:const Icon(CupertinoIcons.bag
-                  
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  )
-                ),
+                    hintText: "Project Descriptions",
+                    prefixIcon: const Icon(CupertinoIcons.bag),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    )),
               ),
-             const SizedBox(height: 32,),
-              TextField(
-                controller: todoDatacontroller,
-                 decoration: InputDecoration(
-                  // labelText: "date",
-                  hintText: "Pick a Data",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  prefixIcon: InkWell(
-                    onTap: (){
-                      _selectedTodoData(context);
-                    },
-                    child:const Icon(CupertinoIcons.calendar),
-                  )
-                 ),
+              const SizedBox(
+                height: 32,
               ),
-             const SizedBox(height: 32,),
               TextField(
+                controller: projectstartDateTimeController,
                 decoration: InputDecoration(
-                  hintText: "Add note",
-                  prefixIcon:const Icon(CupertinoIcons.cube
-                  
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  )
-                ),
+                    // labelText: "date",
+                    hintText: "Project start Date",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    prefixIcon: InkWell(
+                      onTap: () {
+                        controller.pickDateTimeForTodo().then((value) {
+                          projectstartDateTimeController.text =
+                              DateFormat('yyyy-MM-dd').format(value);
+                        });
+                      },
+                      child: const Icon(CupertinoIcons.calendar),
+                    )),
               ),
-             const SizedBox(height: 32,),
+              const SizedBox(
+                height: 32,
+              ),
               TextField(
+                controller: projectEndDateTimeController,
                 decoration: InputDecoration(
-                  hintText: "Category",
-                  prefixIcon:const Icon(CupertinoIcons.create
-                  
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  )
+                    // labelText: "date",
+                    hintText: "Project end Date",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    prefixIcon: InkWell(
+                      onTap: () {
+                        controller.pickDateTimeForTodo().then((value) {
+                          projectEndDateTimeController.text =
+                              DateFormat('yyyy-MM-dd').format(value);
+                        });
+                      },
+                      child: const Icon(CupertinoIcons.calendar),
+                    )),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: width,
+                height: 200,
+                // color: Colors.red,
+                child: ListView.builder(
+                  itemCount: projectTasks.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == projectTasks.length) {
+                      return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: (){},
+                            child: Container(
+                              width: width,
+                              height: 50,
+                              color: Colors.green[50],
+                              child:Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    
+                                   Icon(CupertinoIcons.add),
+                                    Text('create Task'), 
+                                  ],
+                                ),
+                              )
+                          
+                            ),
+                          ));
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: width,
+                        height: 60,
+                        // color: Colors.green,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(CupertinoIcons.cube), 
+                            Text(projectTasks[index].taskName!)
+
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(height: 32,),
+              const SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,
-                height:50,
+                height: 50,
                 child: ElevatedButton(
-                  
-                  onPressed: (){},
-                child:const Text("Create")),
+                    onPressed: () {}, child: const Text("Create")),
               )
             ],
           ),

@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_todo_app/controller/home_screen_controller.dart';
+import 'package:hive_todo_app/controller/app_controller.dart';
 import 'package:hive_todo_app/models/proeject_task_modle.dart';
 import 'package:hive_todo_app/models/project_model.dart';
 import 'package:hive_todo_app/models/project_status_model.dart';
 import 'package:hive_todo_app/routes/app_routes.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends GetView<AppController> {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -68,7 +68,7 @@ class HomeScreen extends GetView<HomeController> {
       width: width,
       height: height! * 0.8,
       // color: Colors.green,
-      child: GetBuilder<HomeController>(builder: (controller) {
+      child: GetBuilder<AppController>(builder: (controller) {
         if (controller.errorMessage != null) {
           return Center(child: Text(controller.errorMessage!));
         }
