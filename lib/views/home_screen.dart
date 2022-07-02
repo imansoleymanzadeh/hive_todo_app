@@ -15,6 +15,10 @@ class HomeScreen extends GetView<AppController> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      key: controller.scaffoldGlobalKey,
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.toNamed(AppRoutes.creatEditScreenRoute);
@@ -41,7 +45,9 @@ class HomeScreen extends GetView<AppController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              controller.openDrawer();
+            },
             icon: const Icon(
               Icons.menu_outlined,
               size: 40,

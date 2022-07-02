@@ -10,6 +10,16 @@ class AppController extends GetxController {
   List<Project> allProjects = [];
   String? errorMessage;
 
+  var scaffoldGlobalKey = GlobalKey<ScaffoldState>();
+
+  void openDrawer() {
+    scaffoldGlobalKey.currentState!.openDrawer();
+  }
+
+  void closeDrawer() {
+    scaffoldGlobalKey.currentState!.closeDrawer();
+
+  }
   createProject({required Project project}) async {
     await _dataBaseService.createProject(project: project).then((value) {
       if (value['resualt'] == CrudStatus.succes) {
